@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTIST SHOWCASE | Discover Creators & Rappers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+:root {
+            --primary: #FF4D8D;
+            --secondary: #6C5CE7;
+            --dark: #1A1A2E;
+            --light: #F1F1F1;
+            --gray: #A0A0A0;
+            --card-bg: #16213E;
+            --neon-green: #39FF14;
+            --kick-purple: #53FC18;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, #0F3460 100%);
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        }
+        
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .search-container {
+            flex-grow: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+            position: relative;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            font-size: 1rem;
+            padding-left: 3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-container input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        
+        .container {
+            padding: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .artists-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 2rem;
+        }
+        
+        .artist-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border: 2px solid transparent;
+            transition: all 0.3s ease, border-color 0.5s ease;
+        }
+        
+        .artist-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3),
+                        0 0 15px var(--neon-green), 
+                        0 0 30px rgba(57, 255, 20, 0.3);
+            border-color: var(--neon-green);
+            animation: pulse-glow 2s infinite;
+        }
+        
+        .artist-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+        
+        .artist-card:hover::before {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green), 
+                        inset 0 0 10px var(--neon-green);
+        }
+        
+        .artist-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .artist-info {
+            padding: 1.2rem;
+        }
+        
+        .artist-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .artist-category {
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .artist-category i {
+            color: var(--primary);
+        }
+        
+        .artist-links {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .artist-card:hover .artist-links {
+            opacity: 1;
+        }
+        
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: scale(1.1);
+        }
+        
+        .instagram {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+        }
+        
+        .youtube {
+            background: #FF0000;
+        }
+        
+        .spotify {
+            background: #1DB954;
+        }
+        
+        .kick {
+            background: var(--kick-purple);
+        }
+        
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 10px var(--neon-green), 0 15px 30px rgba(0, 0, 0, 0.3); }
+            50% { box-shadow: 0 0 20px var(--neon-green), 0 15px 30px rgba(0, 0, 0, 0.3); }
+            100% { box-shadow: 0 0 10px var(--neon-green), 0 15px 30px rgba(0, 0, 0, 0.3); }
+        }
+        
+        .artist-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: linear-gradient(145deg, var(--card-bg) 0%, #1A1A2E 100%);
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: modalFadeIn 0.4s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-modal:hover {
+            color: var(--light);
+            transform: rotate(90deg);
+        }
+        
+        .artist-header {
+            display: flex;
+            margin-bottom: 2rem;
+            gap: 2rem;
+        }
+        
+        .artist-modal-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .artist-details {
+            flex: 1;
+        }
+        
+        .artist-modal-name {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .artist-modal-category {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .artist-modal-category i {
+            color: var(--primary);
+        }
+        
+        .artist-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stat-item i {
+            color: var(--primary);
+        }
+        
+        .stat-value {
+            font-weight: 600;
+        }
+        
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .social-btn i {
+            font-size: 1.2rem;
+        }
+        
+        .artist-bio {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: var(--gray);
+        }
+        
+        .popular-works {
+            margin-top: 2rem;
+        }
+        
+        .works-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .works-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .work-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .work-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .work-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .work-info {
+            padding: 1rem;
+        }
+        
+        .work-title {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+        
+        .work-type {
+            color: var(--gray);
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .work-type i {
+            color: var(--primary);
+            font-size: 0.7rem;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .search-container {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .artists-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .artist-header {
+                flex-direction: column;
+            }
+            
+            .artist-modal-image {
+                width: 100%;
+                height: 250px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+            .kick {
+            background: #53FC18; /* Kick's green color */
+        }
+        }
+
+        
+/* Footer Logo Styles */
+.footer-logo {
+    margin: 1rem auto 0;
+    text-align: center;
+}
+
+.footer-logo img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+    box-shadow: 0 0 15px rgba(255, 77, 141, 0.5);
+    transition: all 0.3s ease;
+}
+
+.footer-logo img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 77, 141, 0.8);
+}
+
+/* Mobile Responsiveness for Footer Logo */
+@media (max-width: 768px) {
+    .footer-logo img {
+        width: 50px;
+        height: 50px;
+    }
+}
+        footer {
+    background: rgba(26, 26, 46, 0.8); /* Semi-transparent dark background */
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    color: var(--light);
+    padding: 2rem;
+    text-align: center;
+    margin-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 10;
+
+    }
+
+    .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    }
+
+    .copyright {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .social-links a {
+        color: var(--light);
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+        color: var(--primary);
+        transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+        footer {
+            padding: 1.5rem;
+        }
+        
+        .social-links {
+            gap: 1rem;
+        }
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ARTIST SHOWCASE</div>
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search artists...">
+        </div>
+    </header>
+    
+        
+        
+    
+    <div class="container">
+        <h1 class="section-title">Featured Artists</h1>
+        
+        <div class="artists-grid">
+            <!-- Artist 1: SHAOLINE -->
+            <div class="artist-card" onclick="openArtistModal(
+                'SHAOLINE', 
+                'Rapper', 
+                'images/shaoline.jpg',
+                'https://www.instagram.com/shaolineee1/?hl=fr',
+                'https://www.youtube.com/@Shaolineee',
+                'https://open.spotify.com/artist/53H9eQ6YVScfvQ0INm5GjH?nd=1&dlsi=662325f6d9ec4371',
+                '',
+                'Morocco'
+            )">
+                <img src="images/shaoline.jpg" alt="SHAOLINE" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/shaolineee1/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@Shaolineee" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://open.spotify.com/artist/53H9eQ6YVScfvQ0INm5GjH?nd=1&dlsi=662325f6d9ec4371" class="social-link spotify" target="_blank"><i class="fab fa-spotify"></i></a>
+
+
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">SHAOLINE</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+                </div>
+            </div>
+            
+            <!-- Artist 2: DONBRA -->
+            <div class="artist-card" onclick="openArtistModal(
+                'DONBRA', 
+                'Rapper', 
+                'images/donbra.jpg',
+                'https://www.instagram.com/donbra_rap/?hl=fr',
+                'https://www.youtube.com/channel/UCB4ic7kduzVzmDFsz2Yg3Pw',
+                '',
+                '',
+                'Morocco'
+            )">
+                <img src="images/donbra.jpg" alt="DONBRA" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/donbra_rap/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCB4ic7kduzVzmDFsz2Yg3Pw" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">DONBRA</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+                </div>
+            </div>
+            
+            <!-- Artist 3: TLBIGGY -->
+            <div class="artist-card" onclick="openArtistModal(
+                'TLBIGGY', 
+                'Rapper', 
+                'images/tlbiggy.jpg',
+                'https://www.instagram.com/tlbiggy/?hl=fr',
+                'https://www.youtube.com/channel/UCmRvYI3PXREuQphTVWNBEfQ',
+                '',
+                '',
+                'Morocco'
+            )">
+                <img src="images/tlbiggy.jpg" alt="TLBIGGY" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/tlbiggy/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCmRvYI3PXREuQphTVWNBEfQ" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">TLBIGGY</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+                </div>
+            </div>
+            
+            <!-- Artist 4: K-THUG -->
+            <div class="artist-card" onclick="openArtistModal(
+                'K-THUG', 
+                'Rapper', 
+                'images/herculy.jpg',
+                'https://www.instagram.com/herculy_beats/?hl=fr',
+                'https://www.youtube.com/@KTHUG',
+                '',
+                '',
+                'Morocco'
+            )">
+                <img src="images/herculy.jpg" alt="K-THUG" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/herculy_beats/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@KTHUG" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">K-THUG</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+                </div>
+            </div>
+            
+            <!-- Artist 5: AESSA -->
+            <div class="artist-card" onclick="openArtistModal(
+                'AESSA', 
+                'Rapper', 
+                'images/aessa.jpg',
+                'https://www.instagram.com/aessa.17/?hl=fr',
+                'https://www.youtube.com/@Aessa',
+                '',
+                '',
+                'Morocco'
+            )">
+                <img src="images/aessa.jpg" alt="AESSA" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/aessa.17/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@Aessa" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">AESSA</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+                </div>
+            </div>
+            
+            <!-- Artist 6: KRAK3N -->
+            <div class="artist-card" onclick="openArtistModal(
+                'KRAK3N', 
+                'Rapper', 
+                'images/kraken.jpg',
+                'https://www.instagram.com/eyokrak3n/?hl=fr',
+                'https://www.youtube.com/@krak3nofficiel',
+                '',
+                '',
+                'Morocco'
+            )">
+                <img src="images/kraken.jpg" alt="KRAK3N" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/eyokrak3n/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@krak3nofficiel" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">KRAK3N</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+                </div>
+            </div>
+    
+            <!-- Artist 7: BIG A -->
+            <div class="artist-card" onclick="openArtistModal(
+                'BIG A', 
+                'Rapper', 
+                'images/big-a.jpg',
+                'https://instagram.com/callme_big_a',
+                'https://youtube.com/BIG_A_off',
+                '',
+                '',
+                'Canada'
+            )">
+                <img src="images/big-a.jpg" alt="KRAK3N" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://instagram.com/callme_big_a" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://youtube.com/BIG_A_off" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">BIG A</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+                </div>
+            </div>
+
+                    <!-- Artist 8: Hadesism -->
+        <div class="artist-card" onclick="openArtistModal(
+            'Hadesism', 
+            'Rapper', 
+            'images/hades.jpg',
+            'https://www.instagram.com/hades1sm/?hl=fr',
+            'https://open.spotify.com/album/0kcWPSZ1GYixKxm4uZbiBY?nd=1&dlsi=b8d138e17d9245ce#login',
+            '',
+            '',
+            'Morocco'
+        )">
+            <img src="images/hades.jpg" alt="Hadesism" class="artist-image">
+            <div class="artist-links">
+                <a href="https://www.instagram.com/hades1sm/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://open.spotify.com/album/0kcWPSZ1GYixKxm4uZbiBY?nd=1&dlsi=b8d138e17d9245ce#login" class="social-link spotify" target="_blank"><i class="fab fa-spotify"></i></a>
+            </div>
+            <div class="artist-info">
+                <div class="artist-name">Hadesism</div>
+                <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+            </div>
+        </div>
+        
+        <!-- Artist 9: ROUIKOS -->
+        <div class="artist-card" onclick="openArtistModal(
+            'ROUIKOS', 
+            'Rapper', 
+            'images/rouikos.jpg',
+            'https://www.instagram.com/rouikos/?hl=fr',
+            'https://www.youtube.com/@rouikos1510',
+            '',
+            '',
+            'Morocco'
+        )">
+            <img src="images/rouikos.jpg" alt="ROUIKOS" class="artist-image">
+            <div class="artist-links">
+                <a href="https://www.instagram.com/rouikos/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@rouikos1510" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="artist-info">
+                <div class="artist-name">ROUIKOS</div>
+                <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+            </div>
+        </div>
+        
+        <!-- Artist 10: MIRV-48 -->
+        <div class="artist-card" onclick="openArtistModal(
+            'MIRV-48', 
+            'Rapper', 
+            'images/murv.jpg',
+            'https://www.instagram.com/mirv48/?hl=fr',
+            'https://www.youtube.com/channel/UCNLrkJhiaNR24ikmOmntxCw',
+            'https://open.spotify.com/album/5Km1Bp2WKvN3R5QkwL3vNq?nd=1&dlsi=4a6ceff0e8ee4e00#login',
+            '',
+            '',
+            'Morocco'
+        )">
+            <img src="images/murv.jpg" alt="MIRV-48" class="artist-image">
+            <div class="artist-links">
+                <a href="https://www.instagram.com/mirv48/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/channel/UCNLrkJhiaNR24ikmOmntxCw" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                <a href="https://open.spotify.com/album/5Km1Bp2WKvN3R5QkwL3vNq?nd=1&dlsi=4a6ceff0e8ee4e00#login" class="social-link spotify" target="_blank"><i class="fab fa-spotify"></i></a>
+
+            </div>
+            <div class="artist-info">
+                <div class="artist-name">MIRV-48</div>
+                <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+            </div>
+        </div>
+        
+        <!-- Artist 11: OUTIS-AZ -->
+        <div class="artist-card" onclick="openArtistModal(
+            'OUTIS-AZ', 
+            'Rapper', 
+            'images/outis.jpg',
+            'https://www.instagram.com/outis_az/?hl=fr',
+            '',
+            '',
+            '',
+            'Morocco'
+        )">
+            <img src="images/outis.jpg" alt="OUTIS-AZ" class="artist-image">
+            <div class="artist-links">
+                <a href="https://www.instagram.com/outis_az/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                <!-- No YouTube link -->
+            </div>
+            <div class="artist-info">
+                <div class="artist-name">OUTIS-AZ</div>
+                <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+            </div>
+        </div>
+
+        <!-- Add this right after the MIRV-48 artist card in your rappers section -->
+
+<!-- Rapper 11: ZETA7 -->
+<div class="artist-card" onclick="openArtistModal(
+    'ZETA7', 
+    'Rapper', 
+    'images/zeta7.jpg',
+    'https://www.instagram.com/zeta7__/?hl=fr',
+    'https://www.youtube.com/@zeta.7x?app=desktop',
+    '',
+    '',
+    'Morocco'
+)">
+    <img src="images/zeta7.jpg" alt="ZETA7" class="artist-image">
+    <div class="artist-links">
+        <a href="https://www.instagram.com/zeta7__/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@zeta.7x?app=desktop" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="artist-info">
+        <div class="artist-name">ZETA7</div>
+        <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+    </div>
+</div>
+
+<!-- Rapper 12: READGOTHIS -->
+<div class="artist-card" onclick="openArtistModal(
+    'READGOTHIS', 
+    'Rapper', 
+    'images/reda.jpg',
+    'https://www.instagram.com/redagoathis/?hl=fr',
+    '',
+    '',
+    '',
+    'Morocco'
+)">
+    <img src="images/reda.jpg" alt="READGOTHIS" class="artist-image">
+    <div class="artist-links">
+        <a href="https://www.instagram.com/redagoathis/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+    </div>
+    <div class="artist-info">
+        <div class="artist-name">READGOTHIS</div>
+        <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+    </div>
+</div>
+
+<!-- Rapper 13: NDROPHIN -->
+<div class="artist-card" onclick="openArtistModal(
+    'NDROPHIN', 
+    'Rapper', 
+    'images/ndr.jpg',
+    'https://www.instagram.com/ndrophin.off/?hl=fr',
+    'https://www.youtube.com/@Ndrophin_off',
+    '',
+    '',
+    'Morocco'
+)">
+    <img src="images/ndr.jpg" alt="NDROPHIN" class="artist-image">
+    <div class="artist-links">
+        <a href="https://www.instagram.com/ndrophin.off/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@Ndrophin_off" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="artist-info">
+        <div class="artist-name">NDROPHIN</div>
+        <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+    </div>
+</div>
+
+<!-- Rapper 14: ROMALISA -->
+<div class="artist-card" onclick="openArtistModal(
+    'ROMALISA', 
+    'Rapper', 
+    'images/roma.jpg',
+    'https://www.instagram.com/romalisaa/?hl=fr',
+    'https://www.youtube.com/@romalisaa',
+    '',
+    '',
+    'Morocco'
+)">
+    <img src="images/roma.jpg" alt="ROMALISA" class="artist-image">
+    <div class="artist-links">
+        <a href="https://www.instagram.com/romalisaa/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@romalisaa" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="artist-info">
+        <div class="artist-name">ROMALISA</div>
+        <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+    </div>
+</div>
+
+<!-- Rapper 15: TheTWAMA -->
+<div class="artist-card" onclick="openArtistModal(
+    'TheTWAMA', 
+    'Rapper', 
+    'images/twama.jpg',
+    'https://www.instagram.com/twama4real/?hl=fr',
+    'https://www.youtube.com/@TheTWAMA',
+    '',
+    '',
+    'Morocco'
+)">
+    <img src="images/twama.jpg" alt="TheTWAMA" class="artist-image">
+    <div class="artist-links">
+        <a href="https://www.instagram.com/twama4real/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.youtube.com/@TheTWAMA" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="artist-info">
+        <div class="artist-name">TheTWAMA</div>
+        <div class="artist-category"><i class="fas fa-microphone"></i> Rapper</div>
+    </div>
+</div>
+        </div>
+    </div>
+
+    
+    <div class="container">
+        <h1 class="section-title">Featured Content Creators</h1>
+
+        
+        
+        <div class="artists-grid">
+            <!-- Content Creator 1: Ilyas el maliki -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Ilyas el maliki', 
+                'Content Creator', 
+                'images/ilyas.jpg',
+                'https://www.instagram.com/ilyas.elmaliki.921/',
+                'https://kick.com/ilyaselmaliki',
+                '',
+                'Morocco'
+            )">
+                <img src="images/ilyas.jpg" alt="Ilyas el maliki" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/ilyas.elmaliki.921/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://kick.com/ilyaselmaliki" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Ilyas el maliki</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+            
+            <!-- Content Creator 2: Ahmed Sabiri -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Ahmed Sabiri', 
+                'Content Creator', 
+                'images/sabiri.jpg',
+                'https://www.instagram.com/ahmedsaabiri/?hl=fr',
+                'https://www.youtube.com/@AhmedSabiri',
+                '',
+                '',
+                'Morocco'
+            )">
+                <img src="images/sabiri.jpg" alt="Ahmed Sabiri" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/ahmedsaabiri/?hl=fr" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@AhmedSabiri" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://kick.com/ahmedsabiri" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Ahmed Sabiri</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+            
+            <!-- Content Creator 3: Nahoule TV -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Nahoule TV', 
+                'Content Creator', 
+                'images/nahoule.jpg',
+                'https://www.instagram.com/nahoule82/',
+                'https://www.youtube.com/@Nahoule82/videos',
+                'https://kick.com/nahoule82k',
+                '',
+                'France'
+            )">
+                <img src="images/nahoule.jpg" alt="Nahoule TV" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/nahoule82/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@Nahoule82/videos" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://kick.com/nahoule82k" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Nahoule TV</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+            
+            <!-- Content Creator 4: Vodka TV -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Vodka TV', 
+                'Content Creator', 
+                'images/vodka.jpg',
+                'https://www.instagram.com/vfunky1/',
+                'https://www.youtube.com/@VodkaFunky1',
+                'https://kick.com/vodkafunky',
+                '',
+                'USA'
+            )">
+                <img src="images/vodka.jpg" alt="Vodka TV" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/vfunky1/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@VodkaFunky1" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://kick.com/vodkafunky" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Vodka TV</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+            
+            <!-- Content Creator 5: Danas TV -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Danas TV', 
+                'Content Creator', 
+                'images/danas.jpg',
+                'https://www.instagram.com/danas.tv/',
+                'https://www.youtube.com/@DanasTV',
+                'https://kick.com/danastv',
+                '',
+                'France'
+            )">
+                <img src="images/danas.jpg" alt="Danas TV" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.youtube.com/@DanasTV" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/danas.tv/" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://kick.com/danastv" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Danas TV</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+            
+            <!-- Content Creator 6: Bougassaa -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Bougassaa', 
+                'Content Creator', 
+                'images/bougassaa.jpg',
+                'https://www.instagram.com/bougassaa_/',
+                'https://www.youtube.com/@Bougassaaa',
+                'https://kick.com/bougassaa',
+                '',
+                'Morocco'
+            )">
+                <img src="images/bougassaa.jpg" alt="Bougassaa" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/bougassaa_/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@Bougassaaa" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://kick.com/bougassaa" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Bougassaa</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+    
+            <!-- Content Creator 7: Muslim333 -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Muslim333', 
+                'Content Creator', 
+                'images/muslim.jpg',
+                'https://www.instagram.com/muslim.s333/',
+                'https://www.youtube.com/@MUSLIM333',
+                'https://kick.com/muslim333x',
+                '',
+                'Morocco'
+            )">
+                <img src="images/muslim.jpg" alt="Muslim333" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/muslim.s333/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@MUSLIM333" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://kick.com/muslim333x" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Muslim333</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+
+            <!-- Content Creator 8: Farouk life -->
+            <div class="artist-card" onclick="openArtistModal(
+                'Farouk life', 
+                'Content Creator', 
+                'images/farouk.jpg',
+                'https://www.instagram.com/farouklife/',
+                'https://www.youtube.com/@FaroukLife',
+                'https://kick.com/farouklife',
+                '',
+                'Spain'
+            )">
+                <img src="images/farouk.jpg" alt="Farouk life" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/farouklife/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@FaroukLife" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://kick.com/farouklife" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">Farouk life</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+            
+            <!-- Content Creator 9: El grande Toto -->
+            <div class="artist-card" onclick="openArtistModal(
+                'El grande Toto', 
+                'Rapper & Content Creator', 
+                'images/toto.jpg',
+                'https://www.instagram.com/elgrandetoto/',
+                'https://www.youtube.com/channel/UCVG705xosVltZb52R0hHr_g',
+                'https://open.spotify.com/artist/4BFLElxtBEdsdwGA1kHTsx',
+                'https://kick.com/elgrandetotoff',
+                'Morocco'
+            )">
+                <img src="images/toto.jpg" alt="El grande Toto" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/elgrandetoto/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/@ElGrandeToto" class="social-link youtube" target="_blank"><i class="fab fa-youtube"></i></a>
+                    <a href="https://open.spotify.com/artist/4BFLElxtBEdsdwGA1kHTsx" class="social-link spotify" target="_blank"><i class="fab fa-spotify"></i></a>
+                    <a href="https://kick.com/elgrandetotoff" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+
+
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">El grande Toto</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i> Rapper & Content Creator</div>
+                </div>
+            </div>
+
+             <!-- Content Creator 10: Sniper -->
+             <div class="artist-card" onclick="openArtistModal(
+                'SNIPER-NOLOVE', 
+                'Content Creator', 
+                'images/SNIPER.jpg',
+                'https://www.instagram.com/sniper_nolove/',
+                'https://kick.com/sniper_nolove',
+                'Morocco'
+            )">
+                <img src="images/SNIPER.JPG" alt="El grande Toto" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/sniper_nolove/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://kick.com/sniper_nolove" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+
+
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">SNIPER-NOLOVE</div>
+                    <div class="artist-category"><i class="fas fa-microphone"></i>  Content Creator</div>
+                </div>
+            </div>
+
+            <!-- Content Creator 8: Farouk life -->
+            <div class="artist-card" onclick="openArtistModal(
+                'THECETY', 
+                'Content Creator', 
+                'images/cety.jpg',
+                'https://www.instagram.com/thecety01/',
+                'https://kick.com/farouklife',
+                'https://kick.com/cety01',
+                'Morocco'
+            )">
+                <img src="images/cety.jpg" alt="Farouk life" class="artist-image">
+                <div class="artist-links">
+                    <a href="https://www.instagram.com/thecety01/" class="social-link instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://kick.com/farouklife" class="social-link kick" target="_blank"><i class="fas fa-gamepad"></i></a>
+
+                </div>
+                <div class="artist-info">
+                    <div class="artist-name">THECETY</div>
+                    <div class="artist-category"><i class="fas fa-video"></i> Content Creator</div>
+                </div>
+            </div>
+            
+        </div>
+    
+
+
+    <!-- Artist Modal -->
+    <div class="artist-modal" id="artistModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeArtistModal()">&times;</span>
+            
+            <div class="artist-header">
+                <img id="modalArtistImage" src="" alt="Artist" class="artist-modal-image">
+                <div class="artist-details">
+                    <h1 id="modalArtistName" class="artist-modal-name">Artist Name</h1>
+                    <div id="modalArtistCategory" class="artist-modal-category">
+                        <i class="fas fa-palette"></i> Artist Category
+                    </div>
+                    
+                    <div class="artist-stats">
+                        <div class="stat-item">
+                            <div>
+                                <div class="stat-value" id="modalArtistExperience"></div>
+                                <div class="stat-label"></div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <div class="stat-value" id="modalArtistLocation">New York</div>
+                                <div class="stat-label">Location</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a id="modalArtistInstagram" href="#" class="social-btn instagram" target="_blank">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                        <a id="modalArtistYoutube" href="#" class="social-btn youtube" target="_blank">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
+                        <a id="modalArtistSpotify" href="#" class="social-btn spotify" target="_blank" style="display: none;">
+                            <i class="fab fa-spotify"></i> Spotify
+                        </a>
+                        <a id="modalArtistKick" href="#" class="social-btn kick" target="_blank" style="display: none;">
+                            <i class="fas fa-gamepad"></i> Kick
+                        </a>
+                    </div>
+                    
+                    <p id="modalArtistBio" class="artist-bio">
+                    </p>
+                </div>
+            </div>
+            
+            <div class="popular-works">
+                <h3 class="works-title"></h3>
+                <div class="works-grid" id="worksGrid">
+                    <!-- Works will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+
+        // Search functionality
+const searchInput = document.querySelector('.search-container input');
+const artistCards = document.querySelectorAll('.artist-card');
+
+searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    
+    artistCards.forEach(card => {
+        const artistName = card.querySelector('.artist-name').textContent.toLowerCase();
+        const artistCategory = card.querySelector('.artist-category').textContent.toLowerCase();
+        
+        if (artistName.includes(searchTerm) || artistCategory.includes(searchTerm)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+});
+
+// Artist Modal functionality
+function openArtistModal(name, category, image, instagram, youtube, thirdLink, fourthLink, location) {
+    const modal = document.getElementById('artistModal');
+    
+    // Set basic info
+    document.getElementById('modalArtistName').textContent = name;
+    document.getElementById('modalArtistImage').src = image;
+    document.getElementById('modalArtistImage').alt = `${name} profile picture`;
+    document.getElementById('modalArtistLocation').textContent = location || 'Morocco';
+
+    // Set category with appropriate icon
+    const icon = category.includes('Rapper') ? 'fa-microphone' : 
+                 category.includes('Content Creator') ? 'fa-video' : 'fa-user';
+    document.getElementById('modalArtistCategory').innerHTML = `<i class="fas ${icon}"></i> ${category}`;
+    
+    // Set social links with proper validation
+    const instagramBtn = document.getElementById('modalArtistInstagram');
+    const youtubeBtn = document.getElementById('modalArtistYoutube');
+    const spotifyBtn = document.getElementById('modalArtistSpotify');
+    const kickBtn = document.getElementById('modalArtistKick');
+
+    // Handle Instagram link
+    if (instagram && instagram !== '') {
+        instagramBtn.href = instagram;
+        instagramBtn.style.display = 'flex';
+    } else {
+        instagramBtn.style.display = 'none';
+    }
+
+    // Handle YouTube link
+    if (youtube && youtube !== '') {
+        youtubeBtn.href = youtube;
+        youtubeBtn.style.display = 'flex';
+    } else {
+        youtubeBtn.style.display = 'none';
+    }
+
+    // Handle third link (Spotify for rappers, Kick for creators)
+    if (category.includes('Rapper') && thirdLink && thirdLink !== '') {
+        spotifyBtn.href = thirdLink;
+        spotifyBtn.style.display = 'flex';
+        kickBtn.style.display = 'none';
+    } else if (category.includes('Content Creator') && thirdLink && thirdLink !== '') {
+        kickBtn.href = thirdLink;
+        kickBtn.style.display = 'flex';
+        spotifyBtn.style.display = 'none';
+    } else {
+        spotifyBtn.style.display = 'none';
+        kickBtn.style.display = 'none';
+    }
+
+    // Handle fourth link (Kick for rappers who might have it)
+    if (fourthLink && fourthLink !== '') {
+        kickBtn.href = fourthLink;
+        kickBtn.style.display = 'flex';
+    }
+
+    // Generate sample works based on category
+    const worksGrid = document.getElementById('worksGrid');
+    worksGrid.innerHTML = '';
+
+    // Create sample works based on artist category
+    let works = [];
+    if (category.includes('Rapper')) {
+        works = [
+
+        ];
+    } else if (category.includes('Content Creator')) {
+       
+    }
+
+    works.forEach(work => {
+        const workItem = document.createElement('div');
+        workItem.className = 'work-item';
+        workItem.innerHTML = `
+            <img src="${work.image}" alt="${work.title}" class="work-image" loading="lazy">
+            <div class="work-info">
+                <div class="work-title">${work.title}</div>
+                <div class="work-type"><i class="fas ${getWorkTypeIcon(work.type)}"></i> ${work.type}</div>
+            </div>
+        `;
+        worksGrid.appendChild(workItem);
+    });
+
+    // Prevent background scrolling when modal is open
+    document.body.style.overflow = 'hidden';
+    
+    // Show modal
+    modal.style.display = 'flex';
+}
+
+function closeArtistModal() {
+    document.getElementById('artistModal').style.display = 'none';
+    document.body.style.overflow = 'auto'; // Re-enable scrolling
+}
+
+// Helper function to get appropriate icon for work type
+function getWorkTypeIcon(type) {
+    if (type.includes('Music') || type.includes('Release')) return 'fa-music';
+    if (type.includes('Video') || type.includes('Vlog')) return 'fa-video';
+    if (type.includes('Stream')) return 'fa-gamepad';
+    return 'fa-file';
+}
+
+// Close modal when clicking outside content
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('artistModal');
+    if (event.target === modal) {
+        closeArtistModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeArtistModal();
+    }
+});
+
+// Image error handling for artist cards
+document.querySelectorAll('.artist-image').forEach(img => {
+    img.addEventListener('error', function() {
+        this.src = 'https://via.placeholder.com/300x300?text=Image+Not+Found';
+        this.alt = 'Image not available';
+    });
+});
+
+// Lazy load images
+if ('loading' in HTMLImageElement.prototype) {
+    document.querySelectorAll('.artist-image').forEach(img => {
+        img.loading = 'lazy';
+    });
+}
+    </script>
+</body>
+
+
+<footer>
+    <div class="footer-content">
+        <p>&copy; 2025 Artist Showcase. All Rights Reserved.</p>
+        <p class="copyright">By Nahoule</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/nahoule82/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@Nahoule82/videos" target="_blank"><i class="fab fa-youtube"></i></a>
+            <a href="https://kick.com/nahoule82k" target="_blank"><i class="fas fa-gamepad"></i></a>
+        </div>
+    </div>
+    <div class="footer-logo">
+        <img src="images/bbn.jpg" alt="Artist Showcase Logo">
+    </div>
+</footer>
+</html>
